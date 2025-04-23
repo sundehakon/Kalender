@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import returnWeekday from "@/utils/returnWeekday";
+import DateResponse from "@/types/dateResponse";
 
 export default function Home() {
    const [day, setDay] = useState<number>(1);
@@ -27,17 +28,11 @@ export default function Home() {
       setYear(now.getFullYear());
      }, []);
 
-   interface WeekdayReturnData {
-      weekday: string;
-      calenderType: string;
-      dateExists: boolean;
-   }
-
    const handleSubmit = () => {
-      const returnData: WeekdayReturnData = returnWeekday(day, month, year);
-      setCalenderType(returnData.calenderType);
-      setWeekday(returnData.weekday);
-      setDateExists(returnData.dateExists ? "Yes" : "No");
+      const returnData: DateResponse = returnWeekday(day, month, year);
+      setCalenderType(returnData.Calendar ?? "Unknown");
+      setWeekday(returnData.Weekday ?? "Unknown");
+      setDateExists(returnData.Exists ? "Yes" : "No");
    };
 
    return (

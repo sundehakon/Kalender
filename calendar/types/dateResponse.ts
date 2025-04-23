@@ -1,5 +1,5 @@
 import { FictiveCalendarCalendarSystemMap } from './fictiveCalendarCalendarSystemMap';
-class DateResponse {
+export default class DateResponse {
 	Weekday!: string | null;
     Calendar!: FictiveCalendarCalendarSystemMap | null;
 	Exists!: boolean;

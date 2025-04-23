@@ -3,8 +3,9 @@ import mapGregorianWeekday from "./mapGregorianWeekday";
 import mapFictiveWeekday from "./mapFictiveCalendarWeekday";
 
 import { FictiveCalendarCalendarSystemMap } from "@/types/fictiveCalendarCalendarSystemMap";
+import DateResponse from "@/types/dateResponse";
 
-export default function returnWeekday(day: number, month: number, year: number) {
+export default function returnWeekday(day: number, month: number, year: number): DateResponse {
    //Input = a date - day, month and year (BC is negative)
    //Output = an integer that can be mapped to determine the weekday
 
@@ -24,10 +25,10 @@ export default function returnWeekday(day: number, month: number, year: number) 
       calenderTypeInteger = 2; //Gregorian
       dateExists = true;
    } else {
-      const returnData = {
-         weekday: null,
-         calenderType: null,
-         dateExists: false,
+      const returnData: DateResponse = {
+         Weekday: null,
+         Calendar: null,
+         Exists: false,
       }
 
       return returnData;
@@ -57,10 +58,10 @@ export default function returnWeekday(day: number, month: number, year: number) 
          throw new Error("Invalid calendar type");
    }
 
-   const returnData = {
-      weekday: weekday,
-      calenderType: calenderType,
-      dateExists: dateExists,
+   const returnData: DateResponse = {
+      Weekday: weekday,
+      Calendar: calenderType,
+      Exists: dateExists,
    };
 
    return returnData;
