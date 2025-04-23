@@ -137,8 +137,7 @@ export default function returnWeekday(day: number, month: number, year: number):
          Exists: false,
          Message: message,
       }
-
-      console.log("Return data in returnWeekday: ", returnData);
+      
       return returnData;
    }
 
@@ -161,19 +160,19 @@ export default function returnWeekday(day: number, month: number, year: number):
             (day + Math.floor((13 * (month + 1)) / 5) + year + Math.floor(year / 4) - Math.floor(year / 100) + Math.floor(year / 400) + 6) % 7;
          weekday = mapGregorianWeekday(weekdayInteger);
          calenderType = FictiveCalendarCalendarSystemMap.Gregorian;
-         console.log("data in switch case", weekdayInteger, weekday, calenderTypeInteger, calenderType);
          break;
       default:
          throw new Error("Invalid calendar type");
    }
 
-   console.log("return data line 160: ", weekday, calenderType, dateExists, message);
    const returnData: DateResponse = {
       Weekday: dateExists ? weekday : FictiveCalendarCalendarSystemMap.Unknown,
       Calendar: dateExists ? calenderType : FictiveCalendarCalendarSystemMap.Unknown,
       Exists: dateExists,
       Message: message,
    };
+
+   console.log("return data: ", returnData);
 
    return returnData;
 }
