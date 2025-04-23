@@ -11,6 +11,7 @@ export default function Home() {
    const [day, setDay] = useState<number>(1);
    const [month, setMonth] = useState<number>(1);
    const [year, setYear] = useState<number>(2000);
+   const [message, setMessage] = useState<string>("Valid date");
 
   const isDayValid = day >= 1 && day <= 31;
   const isMonthValid = month >= 1 && month <= 12;
@@ -31,9 +32,11 @@ export default function Home() {
 
    const handleSubmit = () => {
       const returnData: DateResponse = returnWeekday(day, month, year);
+      console.log("Return data: ", returnData);
       setCalenderType(returnData.Calendar ?? "Unknown");
       setWeekday(returnData.Weekday ?? "Unknown");
       setDateExists(returnData.Exists ? "Yes" : "No");
+      setMessage(returnData.Message);
    };
 
   return (
@@ -95,6 +98,7 @@ export default function Home() {
             {weekday && <p className="text-sm">Weekday: {weekday}</p>}
             {calenderType && <p className="text-sm">Calendar Type: {calenderType}</p>}
             {dateExists && <p className="text-sm">Date Exists: {dateExists}</p>}
+            {message && <p className="text-sm">Message: {message}</p>}
           </div>
         </div>
       </Card>
