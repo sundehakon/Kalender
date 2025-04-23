@@ -1,14 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import returnWeekday from "@/utils/returnWeekday";
 
 export default function Home() {
-  const [day, setDay] = useState(new Date().getDate());
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [year, setYear] = useState(new Date().getFullYear());
+   const [day, setDay] = useState<number>(1);
+   const [month, setMonth] = useState<number>(1);
+   const [year, setYear] = useState<number>(2000);
 
    const isDayValid = day >= 1 && day <= 31;
    const isMonthValid = month >= 1 && month <= 12;
@@ -19,6 +19,13 @@ export default function Home() {
    const [weekday, setWeekday] = useState("");
    const [calenderType, setCalenderType] = useState("");
    const [dateExists, setDateExists] = useState("");
+
+   useEffect(() => {
+      const now = new Date();
+      setDay(now.getDate());
+      setMonth(now.getMonth() + 1); // Months are zero-based in JavaScript
+      setYear(now.getFullYear());
+     }, []);
 
    interface WeekdayReturnData {
       weekday: string;
