@@ -16,7 +16,7 @@ export default function returnWeekday(day: number, month: number, year: number):
    let calenderTypeInteger = 0;
 
    if (year > -1000 && year < -45) {
-      calenderTypeInteger = 0; //Fictive
+      calenderTypeInteger = 0; // Fictive
 
       if (year % 4 === 0) {
          if (month === 2 && day > 29) {
@@ -69,6 +69,10 @@ export default function returnWeekday(day: number, month: number, year: number):
       calenderTypeInteger = 2; // Gregorian
 
       // TODO: year 0 does not exist in Gregorian calendar, but it is not handled here. Sjekk oppgave tekst
+
+      if (year === 0) {
+         dateExists = false;
+      }
 
       if (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) {
          if (month === 2 && day > 29) {
