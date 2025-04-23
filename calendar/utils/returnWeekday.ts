@@ -13,17 +13,84 @@ export default function returnWeekday(day: number, month: number, year: number):
    let calenderType: FictiveCalendarCalendarSystemMap;
 
    let dateExists = false;
-
    let calenderTypeInteger = 0;
+
    if (year > -1000 && year < -45) {
       calenderTypeInteger = 0; //Fictive
-      dateExists = true;
+
+      if (year % 4 === 0) {
+         if (month === 2 && day > 29) {
+            dateExists = false;
+         } else if (month === 2 && day <= 29) {
+            dateExists = true;
+         }
+      } else {
+         if (month === 2 && day > 28) {
+            dateExists = false;
+         } else if (month === 2 && day <= 28) {
+            dateExists = true;
+         } else if (day > 31) {
+            dateExists = false;
+         } else if (day === 31) {
+            if (month === 4 || month === 6 || month === 9 || month === 11) {
+               dateExists = false;
+            } else {
+               dateExists = true;
+            }
+         }
+      }
+
    } else if ((year >= -45 && year < 1582) || (year === 1582 && month <= 10 && day <= 4)) {
       calenderTypeInteger = 1; //Julian
-      dateExists = true;
+      
+      if (year % 4 === 0) {
+         if (month === 2 && day > 29) {
+            dateExists = false;
+         } else if (month === 2 && day <= 29) {
+            dateExists = true;
+         }
+      } else {
+         if (month === 2 && day > 28) {
+            dateExists = false;
+         } else if (month === 2 && day <= 28) {
+            dateExists = true;
+         } else if (day > 31) {
+            dateExists = false;
+         } else if (day === 31) {
+            if (month === 4 || month === 6 || month === 9 || month === 11) {
+               dateExists = false;
+            } else {
+               dateExists = true;
+            }
+         }
+      }
+
    } else if ((year > 1582) || (year === 1582 && month >= 10 && day >= 15)) {
-      calenderTypeInteger = 2; //Gregorian
-      dateExists = true;
+      calenderTypeInteger = 2; // Gregorian
+
+      // TODO: year 0 does not exist in Gregorian calendar, but it is not handled here. Sjekk oppgave tekst
+
+      if (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) {
+         if (month === 2 && day > 29) {
+            dateExists = false;
+         } else if (month === 2 && day <= 29) {
+            dateExists = true;
+         }
+      } else {
+         if (month === 2 && day > 28) {
+            dateExists = false;
+         } else if (month === 2 && day <= 28) {
+            dateExists = true;
+         } else if (day > 31) {
+            dateExists = false;
+         } else if (day === 31) {
+            if (month === 4 || month === 6 || month === 9 || month === 11) {
+               dateExists = false;
+            } else {
+               dateExists = true;
+            }
+         }
+      }
    } else {
       const returnData: DateResponse = {
          Weekday: null,
@@ -59,8 +126,8 @@ export default function returnWeekday(day: number, month: number, year: number):
    }
 
    const returnData: DateResponse = {
-      Weekday: weekday,
-      Calendar: calenderType,
+      Weekday: dateExists ? weekday : FictiveCalendarCalendarSystemMap.Unknown,
+      Calendar: dateExists ? calenderType : FictiveCalendarCalendarSystemMap.Unknown,
       Exists: dateExists,
    };
 
