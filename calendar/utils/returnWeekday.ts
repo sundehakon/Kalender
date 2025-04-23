@@ -9,19 +9,31 @@ export default function returnWeekday(day: number, month: number, year: number) 
    //Output = an integer that can be mapped to determine the weekday
 
    //Determine what calender "type" is used (Gregorian, Julian or Fictive)
-   //Gregorian = 0, Julian = 1, Fictive = 2
    let calenderType: FictiveCalendarCalendarSystemMap;
+
+   let dateExists = false;
 
    let calenderTypeInteger = 0;
    if (year > -1000 && year < -45) {
       calenderTypeInteger = 0; //Fictive
-   } else if (year >= -45 && year <= 1582) {
+      dateExists = true;
+   } else if ((year >= -45 && year < 1582) || (year === 1582 && month <= 10 && day <= 4)) {
       calenderTypeInteger = 1; //Julian
-   } else if (year > 1582) {
+      dateExists = true;
+   } else if ((year > 1582) || (year === 1582 && month >= 10 && day >= 15)) {
       calenderTypeInteger = 2; //Gregorian
+      dateExists = true;
+   } else {
+      const returnData = {
+         weekday: null,
+         calenderType: null,
+         dateExists: false,
+      }
+
+      return returnData;
    }
 
-   //Determine the weekday using the Zeller's Congruence algorithm
+   // Determine the weekday using the Zeller's Congruence algorithm
    let weekdayInteger = null;
    let weekday = null;
    switch (calenderTypeInteger) {
@@ -45,11 +57,7 @@ export default function returnWeekday(day: number, month: number, year: number) 
          throw new Error("Invalid calendar type");
    }
 
-   //Check if the date exists in the calender system, f.eks. 10. oktober 1582 does not exist
-   //MANGLER FUNKSJONALITET
-   let dateExists = true;
-
-   let returnData = {
+   const returnData = {
       weekday: weekday,
       calenderType: calenderType,
       dateExists: dateExists,
