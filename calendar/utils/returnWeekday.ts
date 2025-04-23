@@ -69,7 +69,7 @@ export default function returnWeekday(day: number, month: number, year: number):
          }
       }
 
-   } else if ((year >= -45 && year < 1582) || (year === 1582 && month <= 10 && day <= 4)) {
+   } else if ((year >= -45 && year < 1582) || (year === 1582 && (month < 10 || (month === 10 && day <= 4)))) {
       calenderTypeInteger = 1; // Julian
       
       if (year % 4 === 0) {
@@ -176,6 +176,7 @@ export default function returnWeekday(day: number, month: number, year: number):
          }
       }
    } else {
+      message = "Invalid date: The date does not exist in any calendar system.";
       const returnData: DateResponse = {
          Weekday: null,
          Calendar: null,
