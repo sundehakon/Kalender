@@ -3,25 +3,105 @@ import mapGregorianWeekday from "./mapGregorianWeekday";
 import mapFictiveWeekday from "./mapFictiveCalendarWeekday";
 
 import { FictiveCalendarCalendarSystemMap } from "@/types/fictiveCalendarCalendarSystemMap";
+import DateResponse from "@/types/dateResponse";
 
-export default function returnWeekday(day: number, month: number, year: number) {
+export default function returnWeekday(day: number, month: number, year: number): DateResponse {
    //Input = a date - day, month and year (BC is negative)
    //Output = an integer that can be mapped to determine the weekday
 
    //Determine what calender "type" is used (Gregorian, Julian or Fictive)
-   //Gregorian = 0, Julian = 1, Fictive = 2
    let calenderType: FictiveCalendarCalendarSystemMap;
 
+   let dateExists = false;
    let calenderTypeInteger = 0;
+
    if (year > -1000 && year < -45) {
       calenderTypeInteger = 0; //Fictive
-   } else if (year >= -45 && year <= 1582) {
+
+      if (year % 4 === 0) {
+         if (month === 2 && day > 29) {
+            dateExists = false;
+         } else if (month === 2 && day <= 29) {
+            dateExists = true;
+         }
+      } else {
+         if (month === 2 && day > 28) {
+            dateExists = false;
+         } else if (month === 2 && day <= 28) {
+            dateExists = true;
+         } else if (day > 31) {
+            dateExists = false;
+         } else if (day === 31) {
+            if (month === 4 || month === 6 || month === 9 || month === 11) {
+               dateExists = false;
+            } else {
+               dateExists = true;
+            }
+         }
+      }
+
+   } else if ((year >= -45 && year < 1582) || (year === 1582 && month <= 10 && day <= 4)) {
       calenderTypeInteger = 1; //Julian
-   } else if (year > 1582) {
-      calenderTypeInteger = 2; //Gregorian
+      
+      if (year % 4 === 0) {
+         if (month === 2 && day > 29) {
+            dateExists = false;
+         } else if (month === 2 && day <= 29) {
+            dateExists = true;
+         }
+      } else {
+         if (month === 2 && day > 28) {
+            dateExists = false;
+         } else if (month === 2 && day <= 28) {
+            dateExists = true;
+         } else if (day > 31) {
+            dateExists = false;
+         } else if (day === 31) {
+            if (month === 4 || month === 6 || month === 9 || month === 11) {
+               dateExists = false;
+            } else {
+               dateExists = true;
+            }
+         }
+      }
+
+   } else if ((year > 1582) || (year === 1582 && month >= 10 && day >= 15)) {
+      calenderTypeInteger = 2; // Gregorian
+
+      // TODO: year 0 does not exist in Gregorian calendar, but it is not handled here. Sjekk oppgave tekst
+
+      if (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) {
+         if (month === 2 && day > 29) {
+            dateExists = false;
+         } else if (month === 2 && day <= 29) {
+            dateExists = true;
+         }
+      } else {
+         if (month === 2 && day > 28) {
+            dateExists = false;
+         } else if (month === 2 && day <= 28) {
+            dateExists = true;
+         } else if (day > 31) {
+            dateExists = false;
+         } else if (day === 31) {
+            if (month === 4 || month === 6 || month === 9 || month === 11) {
+               dateExists = false;
+            } else {
+               dateExists = true;
+            }
+         }
+      }
+   } else {
+      const returnData: DateResponse = {
+         Weekday: null,
+         Calendar: null,
+         Exists: false,
+      }
+
+      return returnData;
    }
 
-   //Determine the weekday using the Zeller's Congruence algorithm
+   // Determine the weekday using the Zeller's Congruence algorithm
    let weekdayInteger = null;
    let weekday = null;
    switch (calenderTypeInteger) {
@@ -45,14 +125,10 @@ export default function returnWeekday(day: number, month: number, year: number) 
          throw new Error("Invalid calendar type");
    }
 
-   //Check if the date exists in the calender system, f.eks. 10. oktober 1582 does not exist
-   //MANGLER FUNKSJONALITET
-   let dateExists = true;
-
-   let returnData = {
-      weekday: weekday,
-      calenderType: calenderType,
-      dateExists: dateExists,
+   const returnData: DateResponse = {
+      Weekday: dateExists ? weekday : FictiveCalendarCalendarSystemMap.Unknown,
+      Calendar: dateExists ? calenderType : FictiveCalendarCalendarSystemMap.Unknown,
+      Exists: dateExists,
    };
 
    return returnData;
