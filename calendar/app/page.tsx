@@ -45,7 +45,7 @@ export default function Home() {
         <p className="text-center text-lg font-semibold mb-4">Calendar</p>
         <span>
           <p className="text-center text-sm">Enter a date to find out the weekday and calendar type.</p>
-          <p className="text-center text-sm">Note: Negative years are equal to the same year in B.C. Year 1 B.C. is year 0, which does not exist.</p>
+          <p className="text-center text-sm">Note: Negative years are equal to the same year in B.C. Year 1 B.C. is year 0</p>
         </span>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
