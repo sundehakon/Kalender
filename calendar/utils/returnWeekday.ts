@@ -13,6 +13,14 @@ export default function returnWeekday(day: number, month: number, year: number):
 
    console.log("Input: ", day, month, year);
 
+   if (year < 0) {
+      year = year + 1;
+   } else if (year === 0) {
+      year = 1;
+   }
+
+   console.log("Adjusted year: ", year);
+
    let calenderType: FictiveCalendarCalendarSystemMap;
 
    let message = "Invalid date";
@@ -198,6 +206,7 @@ export default function returnWeekday(day: number, month: number, year: number):
          break;
       case 1: //Julian
          weekdayInteger = (day + Math.floor((13 * (month + 1)) / 5) + year + Math.floor(year / 4) + 5) % 7;
+         weekdayInteger = ((weekdayInteger % 7) + 7) % 7;
          weekday = mapJulianWeekday(weekdayInteger);
          calenderType = FictiveCalendarCalendarSystemMap.Julian;
          break;

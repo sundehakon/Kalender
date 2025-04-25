@@ -1,12 +1,13 @@
 const julianWeekdayMapper: Record<number, string> = {
+   0: "Saturday",
    1: "Sunday",
    2: "Monday",
    3: "Tuesday",
    4: "Wednesday",
    5: "Thursday",
    6: "Friday",
-   7: "Saturday",
 };
+
 
 export default function mapJulianWeekday(weekday: number): string {
    if (weekday < 0 || weekday > 6) {

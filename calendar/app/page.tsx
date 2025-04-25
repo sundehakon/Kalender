@@ -15,7 +15,7 @@ export default function Home() {
 
   const isDayValid = day >= 1 && day <= 31;
   const isMonthValid = month >= 1 && month <= 12;
-  const isYearValid = year >= -1000 && year <= 2030 && year !== 0;
+  const isYearValid = year >= -1000 && year <= 2030 && year !== 1;
 
   const isFormValid = isDayValid && isMonthValid && isYearValid;
 
@@ -43,6 +43,10 @@ export default function Home() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="p-8 shadow-lg rounded-lg bg-white w-full max-w-md">
         <p className="text-center text-lg font-semibold mb-4">Calendar</p>
+        <span>
+          <p className="text-center text-sm">Enter a date to find out the weekday and calendar type.</p>
+          <p className="text-center text-sm">Note: Negative years are equal to the same year in B.C. Year 1 B.C. is year 0, which does not exist.</p>
+        </span>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <Label htmlFor="day">Day</Label>
