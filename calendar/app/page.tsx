@@ -8,14 +8,18 @@ import { Card } from "@/components/ui/card";
 import DateResponse from "@/types/dateResponse";
 
 export default function Home() {
+  const [formDay, setFormDay] = useState<number>(1);
+  const [formMonth, setFormMonth] = useState<number>(1);
+  const [formYear, setFormYear] = useState<number>(2000);
+  
   const [day, setDay] = useState<number>(1);
   const [month, setMonth] = useState<number>(1);
   const [year, setYear] = useState<number>(2000);
   const [message, setMessage] = useState<string>("Valid date");
 
-  const isDayValid = day >= 1 && day <= 31;
-  const isMonthValid = month >= 1 && month <= 12;
-  const isYearValid = year >= -1000 && year <= 2030 && year !== 0;
+  const isDayValid = formDay >= 1 && formDay <= 31;
+  const isMonthValid = formMonth >= 1 && formMonth <= 12;
+  const isYearValid = formYear >= -1000 && formYear <= 2030 && formYear !== 0;
 
   const isFormValid = isDayValid && isMonthValid && isYearValid;
 
@@ -28,20 +32,31 @@ export default function Home() {
 
   useEffect(() => {
     const now = new Date();
-    setDay(now.getDate());
-    setMonth(now.getMonth() + 1); // Months are zero-based in JavaScript
-    setYear(now.getFullYear());
+    const currentDay = now.getDate();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear();
+    
+    setFormDay(currentDay);
+    setFormMonth(currentMonth);
+    setFormYear(currentYear);
+    setDay(currentDay);
+    setMonth(currentMonth);
+    setYear(currentYear);
   }, []);
 
   const handleSubmit = () => {
-    const returnData: DateResponse = returnWeekday(day, month, year);
+    setDay(formDay);
+    setMonth(formMonth);
+    setYear(formYear);
+    
+    const returnData: DateResponse = returnWeekday(formDay, formMonth, formYear);
     console.log("Return data: ", returnData);
     setCalenderType(returnData.Calendar ?? "Unknown");
     setWeekday(returnData.Weekday ?? "Unknown");
     setDateExists(returnData.Exists ? "Yes" : "No");
     setMessage(returnData.Message);
 
-    generateMonthCalendar(year, month);
+    generateMonthCalendar(formYear, formMonth);
   };
 
   const generateMonthCalendar = (year: number, month: number) => {
@@ -67,8 +82,8 @@ export default function Home() {
               className="w-full"
               min="1"
               max="31"
-              value={day === 0 ? "" : day}
-              onChange={(e) => setDay(Number(e.target.value))}
+              value={formDay === 0 ? "" : formDay}
+              onChange={(e) => setFormDay(Number(e.target.value))}
             />
             {!isDayValid && <p className="text-red-500 text-xs">Must be between 1-31</p>}
           </div>
@@ -81,8 +96,8 @@ export default function Home() {
               className="w-full"
               min="1"
               max="12"
-              value={month === 0 ? "" : month}
-              onChange={(e) => setMonth(Number(e.target.value))}
+              value={formMonth === 0 ? "" : formMonth}
+              onChange={(e) => setFormMonth(Number(e.target.value))}
             />
             {!isMonthValid && <p className="text-red-500 text-xs">Must be between 1-12</p>}
           </div>
@@ -95,8 +110,8 @@ export default function Home() {
               className="w-full"
               min="-1000"
               max="2030"
-              value={year === 0 ? "" : year}
-              onChange={(e) => setYear(Number(e.target.value))}
+              value={formYear === 0 ? "" : formYear}
+              onChange={(e) => setFormYear(Number(e.target.value))}
             />
             {!isYearValid && <p className="text-red-500 text-xs">Must be between -1000-2030</p>}
           </div>
