@@ -131,12 +131,14 @@ export default function Home() {
                 {Array.from({ length: startWeekday }).map((_, index) => (
                   <div key={`empty-${index}`} className="text-center text-sm"></div>
                 ))}
-                {monthDays.map((day) => (
+                {monthDays.map((calendarDay) => (
                   <div
-                    key={day}
-                    className="border border-gray-300 rounded p-2 text-center text-sm"
+                    key={calendarDay}
+                    className={`border rounded p-2 text-center text-sm ${
+                      calendarDay === day ? "bg-blue-500 text-white font-bold" : "border-gray-300"
+                    }`}
                   >
-                    {day}
+                    {calendarDay}
                   </div>
                 ))}
               </div>
