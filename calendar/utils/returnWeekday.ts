@@ -203,6 +203,9 @@ export default function returnWeekday(day: number, month: number, year: number):
    switch (calenderTypeInteger) {
       case 0: //Fictive
          weekdayInteger = (day + Math.floor((13 * (month + 1)) / 5) + year + Math.floor(year / 4) + 2) % 7;
+
+         // Normalize to 0–6 range
+         weekdayInteger = ((weekdayInteger % 7) + 7) % 7;
          weekday = mapFictiveWeekday(weekdayInteger);
          calenderType = FictiveCalendarCalendarSystemMap.Fictive;
          break;
