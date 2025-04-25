@@ -17,8 +17,8 @@ export default function returnWeekday(day: number, month: number, year: number):
 
    if (year < 0) {
       year = year + 1;
-   } else if (year === 0) {
-      year = 1;
+   } else if (year === -1) {
+      year = 0;
    }
 
    console.log("Adjusted year: ", year);
