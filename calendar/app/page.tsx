@@ -15,7 +15,7 @@ export default function Home() {
 
   const isDayValid = day >= 1 && day <= 31;
   const isMonthValid = month >= 1 && month <= 12;
-  const isYearValid = year >= -1000 && year <= 2030 && year !== 1;
+  const isYearValid = year >= -1000 && year <= 2030 && year !== 0;
 
   const isFormValid = isDayValid && isMonthValid && isYearValid;
 
