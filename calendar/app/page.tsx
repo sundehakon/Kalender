@@ -22,7 +22,7 @@ export default function Home() {
    const [weekday, setWeekday] = useState("");
    const [calenderType, setCalenderType] = useState("");
    const [dateExists, setDateExists] = useState("");
-   const [calendarDays, setCalendarDays] = useState<number[][]>([]);
+   const [calendarDays, setCalendarDays] = useState<(number | null)[][]>([]);
 
    useEffect(() => {
       const now = new Date();
@@ -32,26 +32,47 @@ export default function Home() {
    }, []);
 
    const generateCalendar = (year: number, month: number) => {
-      const firstDay = new Date(year, month - 1, 1).getDay();
-      const daysInMonth = new Date(year, month, 0).getDate();
-
-      const weeks: number[][] = [];
-      let week: number[] = new Array(firstDay).fill(0);
-
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    const daysInMonth = new Date(year, month, 0).getDate();
+  
+    const weeks: (number | null)[][] = []; // Use null for invalid dates
+    let week: (number | null)[] = new Array(firstDay).fill(null); // Fill the first week with null for invalid dates
+  
+    // Handle the special case for October 1582 (missing days between 4-15)
+    if (year === 1582 && month === 10) {
       for (let day = 1; day <= daysInMonth; day++) {
-         week.push(day);
-         if (week.length === 7) {
-            weeks.push(week);
-            week = [];
-         }
+        // Skip days 4 to 15, which are missing
+        if (day > 4 && day < 15) {
+          week.push(null); // Leave empty cells for the missing days
+        } else {
+          week.push(day); // Add valid days
+        }
+        
+        if (week.length === 7) {
+          weeks.push(week);
+          week = [];
+        }
       }
-
-      if (week.length > 0) {
-         weeks.push(week);
+    } else {
+      // Regular month, no special handling for missing days
+      for (let day = 1; day <= daysInMonth; day++) {
+        week.push(day);
+        if (week.length === 7) {
+          weeks.push(week);
+          week = [];
+        }
       }
-
-      setCalendarDays(weeks);
-   };
+    }
+  
+    // Push the last week if it contains any days
+    if (week.length > 0) {
+      weeks.push(week);
+    }
+  
+    setCalendarDays(weeks);
+  };
+  
+  
 
    const handleSubmit = () => {
       const returnData: DateResponse = returnWeekday(day, month, year);
