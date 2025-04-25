@@ -27,7 +27,7 @@ export default function Home() {
    useEffect(() => {
       const now = new Date();
       setDay(now.getDate());
-      setMonth(now.getMonth() + 1); // Months are zero-based in JavaScript
+      setMonth(now.getMonth() + 1); // Months start at 0 in js
       setYear(now.getFullYear());
    }, []);
 
@@ -35,17 +35,17 @@ export default function Home() {
     const firstDay = new Date(year, month - 1, 1).getDay();
     const daysInMonth = new Date(year, month, 0).getDate();
   
-    const weeks: (number | null)[][] = []; // Use null for invalid dates
-    let week: (number | null)[] = new Array(firstDay).fill(null); // Fill the first week with null for invalid dates
+    const weeks: (number | null)[][] = [];
+    let week: (number | null)[] = new Array(firstDay).fill(null);
   
     // Handle the special case for October 1582 (missing days between 4-15)
     if (year === 1582 && month === 10) {
       for (let day = 1; day <= daysInMonth; day++) {
         // Skip days 4 to 15, which are missing
         if (day > 4 && day < 15) {
-          week.push(null); // Leave empty cells for the missing days
+          week.push(null);
         } else {
-          week.push(day); // Add valid days
+          week.push(day); 
         }
         
         if (week.length === 7) {

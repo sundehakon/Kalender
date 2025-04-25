@@ -13,14 +13,6 @@ export default function returnWeekday(day: number, month: number, year: number):
 
    console.log("Input: ", day, month, year);
 
-   // Year 1 Before Christ is year 0, negative years have to be added with + 1 to be valid in zellers congruence
-
-   if (year < 0) {
-      year = year + 1;
-   } else if (year === -1) {
-      year = 0;
-   }
-
    console.log("Adjusted year: ", year);
 
    let calenderType: FictiveCalendarCalendarSystemMap;
