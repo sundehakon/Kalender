@@ -13,6 +13,8 @@ export default function returnWeekday(day: number, month: number, year: number):
 
    console.log("Input: ", day, month, year);
 
+   console.log("Adjusted year: ", year);
+
    let calenderType: FictiveCalendarCalendarSystemMap;
 
    let message = "Invalid date";
@@ -85,7 +87,7 @@ export default function returnWeekday(day: number, month: number, year: number):
             dateExists = false;
          } else if (day === 31) {
             if (month === 4 || month === 6 || month === 9 || month === 11) {
-               message = "Invalid date: Some months cannot have more than 31 days.";
+               message = "Invalid date: Month cannot have more than 30 days.";
                dateExists = false;
             } else {
                message = "Valid date: Month has 31 days.";
@@ -193,11 +195,15 @@ export default function returnWeekday(day: number, month: number, year: number):
    switch (calenderTypeInteger) {
       case 0: //Fictive
          weekdayInteger = (day + Math.floor((13 * (month + 1)) / 5) + year + Math.floor(year / 4) + 2) % 7;
+
+         // Normalize to 0–6 range
+         weekdayInteger = ((weekdayInteger % 7) + 7) % 7;
          weekday = mapFictiveWeekday(weekdayInteger);
          calenderType = FictiveCalendarCalendarSystemMap.Fictive;
          break;
       case 1: //Julian
          weekdayInteger = (day + Math.floor((13 * (month + 1)) / 5) + year + Math.floor(year / 4) + 5) % 7;
+         weekdayInteger = ((weekdayInteger % 7) + 7) % 7;
          weekday = mapJulianWeekday(weekdayInteger);
          calenderType = FictiveCalendarCalendarSystemMap.Julian;
          break;
