@@ -32,44 +32,55 @@ export default function Home() {
   }, []);
 
   const generateCalendar = (year: number, month: number) => {
-    const firstDay = new Date(year, month - 1, 1).getDay();
-    const daysInMonth = new Date(year, month, 0).getDate();
+    let firstDay = new Date(year, month - 1, 1).getDay();
+    let daysInMonth = new Date(year, month, 0).getDate();
 
     const weeks: (number | null)[][] = [];
-    let week: (number | null)[] = new Array(firstDay).fill(null);
 
+    // Special handling for October 1582
     if (year === 1582 && month === 10) {
+      // In reality, October 1, 1582 was a Monday, so firstDay = 1
+      firstDay = 1;
+
+      let week: (number | null)[] = new Array(firstDay).fill(null);
+
       for (let day = 1; day <= daysInMonth; day++) {
-        if (day > 4 && day < 15) {
-          if (week.length > 0) {
-            weeks.push(week);
-            week = [];
-          }
-          week.push(null);
-        } else {
-          week.push(day);
+        if (day === 5) {
+          day = 15; // Skip 5 to 14
         }
+
+        week.push(day);
 
         if (week.length === 7) {
           weeks.push(week);
           week = [];
         }
+      }
+
+      if (week.length > 0) {
+        while (week.length < 7) {
+          week.push(null);
+        }
+        weeks.push(week);
       }
     } else {
+      let week: (number | null)[] = new Array(firstDay).fill(null);
+
       for (let day = 1; day <= daysInMonth; day++) {
         week.push(day);
+
         if (week.length === 7) {
           weeks.push(week);
           week = [];
         }
       }
-    }
 
-    if (week.length > 0) {
-      while (week.length < 7) {
-        week.push(null);
+      if (week.length > 0) {
+        while (week.length < 7) {
+          week.push(null);
+        }
+        weeks.push(week);
       }
-      weeks.push(week);
     }
 
     setCalendarDays(weeks);
